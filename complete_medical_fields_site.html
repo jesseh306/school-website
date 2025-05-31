@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medical Fields Grid</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .category-labels {
+      display: flex;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto 20px auto;
+      padding: 0 10px;
+      font-weight: bold;
+    }
+    .category-labels a {
+      text-decoration: none;
+      color: #000;
+      transition: color 0.3s;
+      cursor: pointer;
+    }
+    .category-labels a:hover {
+      color: #007BFF;
+    }
+    .field-box a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #fff;
+      height: 160px;
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #000;
+      text-align: center;
+      border-radius: 8px;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+      text-decoration: none;
+      color: black;
+      transition: background-color 0.3s;
+      font-size: 1.1rem;
+    }
+    .field-box a:hover {
+      background-color: #e0e0e0;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="category-labels">
+    <a onclick="showSection('humanities')">Humanities</a>
+    <a onclick="showSection('trades')">Trades</a>
+    <a onclick="showSection('stem')">STEM</a>
+    <a onclick="showSection('medical')">Medicine</a>
+    <a onclick="showSection('sports')">Sports</a>
+  </div>
+
+  <div id="medical" class="grid-container hidden"></div>
+  <div id="stem" class="grid-container hidden"></div>
+  <div id="trades" class="grid-container hidden"></div>
+  <div id="humanities" class="grid-container hidden"></div>
+  <div id="sports" class="grid-container hidden"></div>
+  <div id="subfields" class="grid-container hidden"></div>
+
+  <script>
+    const sections = {...};  // placeholder for brevity
+    const subfieldMap = {...};  // placeholder for brevity
+
+    function showSection(sectionId) {
+      Object.keys(sections).forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+      });
+      document.getElementById('subfields').classList.add('hidden');
+
+      const container = document.getElementById(sectionId);
+      container.innerHTML = sections[sectionId].map(field =>
+        `<div class="field-box"><a href="#" onclick="showSubfields('${field}')">${field}</a></div>`
+      ).join('');
+      container.classList.remove('hidden');
+    }
+
+    function showSubfields(fieldName) {
+      const subfields = subfieldMap[fieldName] || Array.from({length: 10}, (_, i) => `${fieldName} Branch ${i + 1}`);
+      const subfieldsContainer = document.getElementById('subfields');
+      subfieldsContainer.innerHTML = subfields.map(sub =>
+        `<div class="field-box"><a href="#">${sub}</a></div>`
+      ).join('');
+
+      document.querySelectorAll('.grid-container').forEach(el => el.classList.add('hidden'));
+      subfieldsContainer.classList.remove('hidden');
+    }
+
+    showSection('stem');
+  </script>
+</body>
+</html>
